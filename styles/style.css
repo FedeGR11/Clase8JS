@@ -1,0 +1,124 @@
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 0 20px;
+  background-color: #f8f9fa;
+  color: #333;
+}
+
+h1 {
+  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 25px;
+}
+
+/* Botenes e inputs */
+.controles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+
+input {
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  outline: none;
+}
+
+input:focus {
+  border-color: #3498db;
+}
+
+#btn-agregar {
+  padding: 10px 20px;
+  background-color: #2ecc71;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+#btn-agregar:hover {
+  background-color: #27ae60;
+}
+
+/* Feedback */
+#feedback {
+  min-height: 24px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+/* Grilla de productos (Tarjetas) */
+#contenedor-productos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+/* Estilo de tarjeta */
+#contenedor-productos > div {
+  background-color: white;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e9ecef;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+#contenedor-productos h3 {
+  margin: 0 0 8px 0;
+  font-size: 18px;
+  color: #2c3e50;
+}
+
+#contenedor-productos span {
+  font-size: 12px;
+  color: #7f8c8d;
+  margin-bottom: 8px;
+}
+
+#contenedor-productos p {
+  font-size: 16px;
+  font-weight: bold;
+  color: #e67e22;
+  margin: 0 0 15px 0;
+}
+
+/* Botón eliminar */
+.btn-eliminar {
+  padding: 8px;
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: background-color 0.2s;
+}
+
+.btn-eliminar:hover {
+  background-color: #c0392b;
+}
+
+/* Color de mensajes */
+.mensaje-exito {
+  color: #2ecc71;
+}
+
+.mensaje-error {
+  color: #e74c3c;
+}
+
+.mensaje-alerta {
+  color: #e67e22;
+}
