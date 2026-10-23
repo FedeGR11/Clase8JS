@@ -4,6 +4,7 @@ const btnAgregar = document.getElementById("btn-agregar");
 const inputBusqueda = document.getElementById("input-busqueda");
 const feedback = document.getElementById("feedback");
 const contenedorProductos = document.getElementById("contenedor-productos");
+const btnVaciar = document.getElementById("btn-vaciar");
 
 
 const productos = [
@@ -13,9 +14,9 @@ const productos = [
 ];
 
 const productosJS = JSON.parse(localStorage.getItem("productosJS")) ?? productos;
-    if (!localStorage.getItem("productosJS")) {
+if (!localStorage.getItem("productosJS")) {
     guardarLocalStorage();
-    }
+}
 
 function guardarLocalStorage() {
     localStorage.setItem("productosJS", JSON.stringify(productosJS));
@@ -24,14 +25,17 @@ function guardarLocalStorage() {
 function renderizarProductos(lista) {
     contenedorProductos.innerHTML = "";
 
-    lista.forEach(({ id, nombre, precio}) => {
+    lista.forEach(({ id, nombre, precio }) => {
         contenedorProductos.innerHTML += `
             <div>
                 <h3>${nombre}</h3>
 
                 <span>ID:${id}</span>
                 <p>Precio: $${precio}</p>
-                <button class="btn-eliminar" data-id="${id}">Eliminar</button>
+                <button class="btn-editar" data-id="${id}">Editar precio</button>
+                <button class="btn-eliminar" data-id="${id}
+                ">Eliminar</button>
+               
             </div>
          `;
     });
@@ -60,7 +64,7 @@ btnAgregar.addEventListener("click", () => {
         return;
     }
 
-    const nuevoProducto = {id: nuevoId, nombre, precio};
+    const nuevoProducto = { id: nuevoId, nombre, precio };
 
     productosJS.push(nuevoProducto);
 
@@ -74,27 +78,70 @@ btnAgregar.addEventListener("click", () => {
 });
 
 inputBusqueda.addEventListener("keyup", (e) => {
-   actualizarVista();
+    actualizarVista();
 });
 
 contenedorProductos.addEventListener("click", (e) => {
-
+    // 1. Eliminación individual
     if (e.target?.classList.contains("btn-eliminar")) {
-        const idAEliminar = parseInt(e.target.getAttribute("data-id"));
-
-
-        const indice = productosJS.findIndex(p => p.id === idAEliminar);
-        
-        if (indice !== -1) {
-        productosJS.splice(indice, 1);
+        try {
+            const idAEliminar = parseInt(e.target.getAttribute("data-id"));
+            if (isNaN(idAEliminar)) {
+                throw new Error("No se pudo identificar el producto a eliminar.");
+            }
+            const indice = productosJS.findIndex(p => p.id === idAEliminar);
+            if (indice !== -1) {
+                productosJS.splice(indice, 1);
+            }
+            guardarLocalStorage();
+            actualizarVista();
+            feedback.textContent = "Producto eliminado con éxito.";
+            feedback.className = "mensaje-alerta";
+        } catch (error) {
+            feedback.textContent = `⚠️ ${error.message}`;
+            feedback.className = "mensaje-error";
         }
+    }
+    // 2. Modificación de datos existentes
+    if (e.target?.classList.contains("btn-editar")) {
+        try {
+            const idAEditar = parseInt(e.target.getAttribute("data-id"));
+            if (isNaN(idAEditar)) {
+                throw new Error("No se pudo identificar el producto a editar.");
+            }
+            const producto = productosJS.find(p => p.id === idAEditar);
+            if (!producto) {
+                throw new Error("Producto no encontrado para editar.");
+            }
+            const nuevoPrecio = parseFloat(prompt(`Nuevo precio para "${producto.nombre}":`, producto.precio));
+            if (isNaN(nuevoPrecio) || nuevoPrecio <= 0) {
+                throw new Error("El precio ingresado no es válido.");
+            }
+            producto.precio = nuevoPrecio;
+            guardarLocalStorage();
+            actualizarVista();
+            feedback.textContent = `Precio de "${producto.nombre}" actualizado a $${nuevoPrecio}.`;
+            feedback.className = "mensaje-exito";
+        } catch (error) {
+            feedback.textContent = `⚠️ ${error.message}`;
+            feedback.className = "mensaje-error";
+        }
+    }
+});
 
+btnVaciar.addEventListener("click", () => {
+    try {
+        if (productosJS.length === 0) {
+            throw new Error("El inventario ya se encuentra vacío.");
+        }
+        // Vaciamos el array manteniendo la referencia de la constante
+        productosJS.length = 0;
         guardarLocalStorage();
-
-        feedback.textContent = "Producto eliminado con éxito.";
-        feedback.className = "mensaje-alerta"
-
         actualizarVista();
-        
+        feedback.textContent = "Se vació todo el inventario correctamente.";
+        feedback.className = "mensaje-alerta";
+    } catch (error) {
+        feedback.textContent = `⚠️ ${error.message}`;
+        feedback.className = "mensaje-error";
     }
 });

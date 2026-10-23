@@ -95,7 +95,8 @@ input:focus {
 }
 
 /* Botón eliminar */
-.btn-eliminar {
+.btn-eliminar,
+.btn-vaciar {
   padding: 8px;
   background-color: #e74c3c;
   color: white;
@@ -106,8 +107,25 @@ input:focus {
   transition: background-color 0.2s;
 }
 
-.btn-eliminar:hover {
+.btn-eliminar:hover,
+.btn-vaciar:hover {
   background-color: #c0392b;
+}
+
+.btn-editar {
+  padding: 8px;
+  margin-bottom: 8px;
+  background-color: #3265d3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: background-color 0.2s;
+}
+
+.btn-editar:hover {
+  background-color: #3265d3;
 }
 
 /* Color de mensajes */
